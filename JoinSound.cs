@@ -1,7 +1,6 @@
 
 using System;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Sharp.Shared;
 using Sharp.Shared.Enums;
 using Sharp.Shared.Listeners;
@@ -55,7 +54,7 @@ public class JoinSound : IModSharpModule, IClientListener, IGameListener
     #region ClientListener
     public void OnClientPostAdminCheck(IGameClient client)
     {
-        if (client.IsValid && !client.IsHltv && !client.IsFakeClient)
+        if (client.IsValid && client is { IsHltv: false, IsFakeClient: false })
         {
             _soundManager.StartSoundEvent("Buttons.snd9", volume: 0.3f, filter: new RecipientFilter());
         }
@@ -63,7 +62,7 @@ public class JoinSound : IModSharpModule, IClientListener, IGameListener
 
     public void OnClientDisconnected(IGameClient client, NetworkDisconnectionReason reason)
     {
-        if (client.IsValid && !client.IsHltv && !client.IsFakeClient)
+        if (client.IsValid && client is { IsHltv: false, IsFakeClient: false })
         {
             _soundManager.StartSoundEvent("DoorHandles.Locked1", volume: 0.3f, filter: new RecipientFilter());
         }
