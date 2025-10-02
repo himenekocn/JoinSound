@@ -10,7 +10,7 @@ using Sharp.Shared.Types;
 
 namespace LynchMus.JoinSound;
 
-public class JoinSound : IModSharpModule, IClientListener, IGameListener
+public sealed class JoinSound : IModSharpModule, IClientListener, IGameListener
 {
     public string DisplayName => "JoinSound";
     public string DisplayAuthor => "LynchMus";
