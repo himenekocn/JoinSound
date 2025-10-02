@@ -57,7 +57,7 @@ public class JoinSound : IModSharpModule, IClientListener, IGameListener
     {
         if (client.IsValid && !client.IsHltv && !client.IsFakeClient)
         {
-            Playjoinsound();
+            _soundManager.StartSoundEvent("Buttons.snd9", volume: 0.3f, filter: new RecipientFilter());
         }
     }
 
@@ -65,7 +65,7 @@ public class JoinSound : IModSharpModule, IClientListener, IGameListener
     {
         if (client.IsValid && !client.IsHltv && !client.IsFakeClient)
         {
-            Playleavesound();
+            _soundManager.StartSoundEvent("DoorHandles.Locked1", volume: 0.3f, filter: new RecipientFilter());
         }
     }
 
@@ -82,15 +82,4 @@ public class JoinSound : IModSharpModule, IClientListener, IGameListener
     int IGameListener.ListenerVersion => IGameListener.ApiVersion;
     int IGameListener.ListenerPriority => 0;
     #endregion
-
-
-    public void Playjoinsound()
-    {
-        _soundManager.StartSoundEvent("Buttons.snd9", volume: 0.3f, filter: new RecipientFilter());
-    }
-
-    public void Playleavesound()
-    {
-        _soundManager.StartSoundEvent("DoorHandles.Locked1", volume: 0.3f, filter: new RecipientFilter());
-    }
 }
