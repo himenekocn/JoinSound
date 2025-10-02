@@ -18,8 +18,8 @@ public class JoinSound : IModSharpModule, IClientListener, IGameListener
 
     private readonly ILogger<JoinSound> _logger;
     private readonly ISharedSystem _shared;
-    public ISoundManager SoundManager { get; }
-    public IModSharp ModSharp { get; }
+    private readonly ISoundManager SoundManager;
+    private readonly IModSharp ModSharp;
 
     public JoinSound(ISharedSystem sharedSystem,
         string? dllPath,
@@ -28,6 +28,11 @@ public class JoinSound : IModSharpModule, IClientListener, IGameListener
         IConfiguration? coreConfiguration,
         bool hotReload)
     {
+        ArgumentNullException.ThrowIfNull(dllPath);
+        ArgumentNullException.ThrowIfNull(sharpPath);
+        ArgumentNullException.ThrowIfNull(version);
+        ArgumentNullException.ThrowIfNull(coreConfiguration);
+
         _logger = sharedSystem.GetLoggerFactory().CreateLogger<JoinSound>();
         _shared = sharedSystem;
         SoundManager = _shared.GetSoundManager();
