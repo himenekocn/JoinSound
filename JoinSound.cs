@@ -16,10 +16,9 @@ public class JoinSound : IModSharpModule, IClientListener, IGameListener
     public string DisplayName => "JoinSound";
     public string DisplayAuthor => "LynchMus";
 
-    private readonly ILogger<JoinSound> _logger;
     private readonly ISharedSystem _shared;
-    private readonly ISoundManager SoundManager;
-    private readonly IModSharp ModSharp;
+    private readonly ISoundManager _soundManager;
+    private readonly IModSharp _modSharp;
 
     public JoinSound(ISharedSystem sharedSystem,
         string? dllPath,
@@ -33,10 +32,9 @@ public class JoinSound : IModSharpModule, IClientListener, IGameListener
         ArgumentNullException.ThrowIfNull(version);
         ArgumentNullException.ThrowIfNull(coreConfiguration);
 
-        _logger = sharedSystem.GetLoggerFactory().CreateLogger<JoinSound>();
         _shared = sharedSystem;
-        SoundManager = _shared.GetSoundManager();
-        ModSharp = _shared.GetModSharp();
+        _soundManager = _shared.GetSoundManager();
+        _modSharp = _shared.GetModSharp();
     }
 
     public bool Init()
@@ -45,13 +43,13 @@ public class JoinSound : IModSharpModule, IClientListener, IGameListener
     public void PostInit()
     {
         _shared.GetClientManager().InstallClientListener(this);
-        ModSharp.InstallGameListener(this);
+        _modSharp.InstallGameListener(this);
     }
 
     public void Shutdown()
     {
         _shared.GetClientManager().RemoveClientListener(this);
-        ModSharp.RemoveGameListener(this);
+        _modSharp.RemoveGameListener(this);
     }
 
     #region ClientListener
@@ -78,7 +76,7 @@ public class JoinSound : IModSharpModule, IClientListener, IGameListener
     #region GameListener
     public void OnResourcePrecache()
     {
-        ModSharp.PrecacheResource("soundevents/game_sounds_world.vsndevts");
+        _modSharp.PrecacheResource("soundevents/game_sounds_world.vsndevts");
     }
 
     int IGameListener.ListenerVersion => IGameListener.ApiVersion;
@@ -88,11 +86,11 @@ public class JoinSound : IModSharpModule, IClientListener, IGameListener
 
     public void Playjoinsound()
     {
-        SoundManager.StartSoundEvent("Buttons.snd9", volume: 0.3f, filter: new RecipientFilter());
+        _soundManager.StartSoundEvent("Buttons.snd9", volume: 0.3f, filter: new RecipientFilter());
     }
 
     public void Playleavesound()
     {
-        SoundManager.StartSoundEvent("DoorHandles.Locked1", volume: 0.3f, filter: new RecipientFilter());
+        _soundManager.StartSoundEvent("DoorHandles.Locked1", volume: 0.3f, filter: new RecipientFilter());
     }
 }
